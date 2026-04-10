@@ -1,0 +1,50 @@
+services:
+
+  datadog:
+    image: datadog/agent:latest
+    container_name: datadog-agent
+    environment:
+      - DD_API_KEY=dummy_local_key
+      - DD_SITE=datadoghq.com
+      - DD_ENV=local
+      - DD_LOGS_ENABLED=true
+      - JAVA_OPTS=-javaagent:/app/dd-java-agent.jar
+      - DD_LOGS_CONFIG_CONTAINER_COLLECT_ALL=true
+      - DD_APM_ENABLED=true
+      - DD_APM_NON_LOCAL_TRAFFIC=true
+      - DD_PROCESS_AGENT_ENABLED=true
+      - DD_RUNTIME_SECURITY_CONFIG_ENABLED=false
+      - DD_DOGSTATSD_NON_LOCAL_TRAFFIC=true
+    ports:
+      - "8126:8126"   # APM / Traces
+      - "8125:8125/udp" # DogStatsD
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - /proc/:/host/proc/:ro
+      - /sys/fs/cgroup:/host/sys/fs/cgroup:ro
+    networks:
+      - pessoa-net
+
+  pessoaDataDogServiceApp:
+    image: pessoa-datadog-service:1.0
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: pessoaDataDogServiceApp
+    environment:
+      - DD_AGENT_HOST=datadog
+      - DD_SERVICE=pessoaDataDogServiceApp
+      - DD_ENV=local
+      - DD_VERSION=1.0.0
+      - DD_METRICS_ENABLED=true
+      - DD_API_KEY=dummy-local-key
+    ports:
+      - "8080:8080"
+    depends_on:
+      - datadog
+    networks:
+      - pessoa-net
+
+networks:
+  pessoa-net:
+    driver: bridge

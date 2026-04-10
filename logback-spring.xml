@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration scan="true">
+
+    <!-- Permite que o Datadog injete trace_id e span_id -->
+    <property name="DD_TRACE_ID" value="%X{dd.trace_id:-0}"/>
+    <property name="DD_SPAN_ID" value="%X{dd.span_id:-0}"/>
+
+    <!-- Encoder JSON estruturado -->
+    <appender name="JSON_STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder class="net.logstash.logback.encoder.LogstashEncoder">
+            <customFields>
+                {
+                "service": "pessoaDataDogServiceApp",
+                "env": "local",
+                "version": "1.0.0"
+                }
+            </customFields>
+        </encoder>
+    </appender>
+
+    <!-- Log de erros separado (opcional) -->
+    <appender name="ERROR_STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+        <filter class="ch.qos.logback.classic.filter.LevelFilter">
+            <level>ERROR</level>
+            <onMatch>ACCEPT</onMatch>
+            <onMismatch>DENY</onMismatch>
+        </filter>
+        <encoder class="net.logstash.logback.encoder.LogstashEncoder">
+            <customFields>
+                {
+                "service": "pessoaDataDogServiceApp",
+                "env": "local",
+                "version": "1.0.0",
+                "log_type": "error"
+                }
+            </customFields>
+        </encoder>
+    </appender>
+
+    <!-- Nível padrão -->
+    <root level="INFO">
+        <appender-ref ref="JSON_STDOUT"/>
+        <appender-ref ref="ERROR_STDOUT"/>
+    </root>
+
+</configuration>

@@ -1,0 +1,52 @@
+pessoaDataDogServiceApp/
+│
+├── pom.xml
+├── Dockerfile
+├── docker-compose.yml
+├── README.md
+│
+├── src/
+│   ├── main/
+│   │   ├── java/
+│   │   │   └── br/com/rvm/poc/pessoaDataDogServiceApp/
+│   │   │       ├── PessoaServiceApplication.java
+│   │   │       │
+│   │   │       ├── controller/
+│   │   │       │   └── PessoaController.java
+│   │   │       │
+│   │   │       ├── service/
+│   │   │       │   └── PessoaService.java
+│   │   │       │
+│   │   │       ├── repository/
+│   │   │       │   └── PessoaRepository.java
+│   │   │       │
+│   │   │       └── model/
+│   │   │           └── Pessoa.java
+│   │   │
+│   │   └── resources/
+│   │       ├── application.yml
+│   │       ├── logback-spring.xml
+│   │       └── os/
+│   │           └── sql/
+│   │               ├── 01_create_table_pessoa.sql
+│   │               ├── 02_insert_pessoa.sql
+│   │               ├── 03_update_pessoa.sql
+│   │               ├── 04_delete_pessoa.sql
+│   │               └── 05_select_pessoa.sql
+│   │
+│   └── test/
+│       └── java/
+│           └── br/com/rogerio/pessoa/
+│               └── PessoaServiceTests.java
+│
+└── scripts/
+    └── curl/
+        ├── insert.sh
+        ├── update.sh
+        ├── delete.sh
+        ├── list.sh
+        └── get.sh
+
+# docker-compose up --build
+# http://localhost:8080/h2-console
+
